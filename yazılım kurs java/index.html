@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CND - Yazılım Eğitimi</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="content-wrapper">
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">CND</a>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="kurslar.html">Kurslar</a>
+                <a href="hakımızda.html">Hakkımızda</a>
+                <a href="iletişim.html">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Geleceğin Yazılımcısı Ol</h1>
+            <p>Modern teknolojiler ve uzman eğitmenlerle kariyerinizi şekillendirin</p>
+            <a href="kurslar.html" class="btn">Kurslara Göz At</a>
+        </div>
+    </section>
+</div>
+    
+    
+    <script>
+        // Matrix efekti için kod
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Canvas boyutlarını pencere boyutuna ayarla
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+
+        // Karakterler (Daha fazla karakter ekleyebilirsiniz)
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>{}[]!@#$%^&*()';
+        const charArray = chars.split('');
+        
+        // Yağmur damlalarının sayısı
+        const raindrops = [];
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        // Her sütun için yağmur damlası pozisyonlarını başlat
+        for(let i = 0; i < columns; i++) {
+            raindrops[i] = Math.floor(Math.random() * -100);
+        }
+
+        function draw() {
+            // Yarı saydam siyah arka plan ekleyerek kuyruk efekti oluştur
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Yeşil renk tonu için
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            // Her sütun için
+            for(let i = 0; i < raindrops.length; i++) {
+                // Rastgele bir karakter seç
+                const char = charArray[Math.floor(Math.random() * charArray.length)];
+                
+                // Karakteri çiz
+                ctx.fillText(char, i * fontSize, raindrops[i] * fontSize);
+
+                // Eğer damla ekranın altına ulaştıysa veya rastgele olarak
+                if(raindrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    raindrops[i] = 0;
+                }
+                raindrops[i]++;
+            }
+        }
+
+        // Animasyonu başlat
+        setInterval(draw, 50);
+    </script>
+
+</body>
+</html>
